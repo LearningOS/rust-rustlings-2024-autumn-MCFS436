@@ -2,7 +2,7 @@
 	heap
 	This question requires you to implement a binary heap function
 */
-// I AM NOT DONE
+
 
 use std::cmp::Ord;
 use std::default::Default;
@@ -37,9 +37,26 @@ where
     }
 
     pub fn add(&mut self, value: T) {
-        //TODO
+        self.count += 1;
+        if self.items.len() <= self.count {
+            self.items.push(T::default());
+        }
+        self.items[self.count] = value;
+        self.heapify_up(self.count);//TODO
     }
 
+    fn heapify_up(&mut self, idx: usize) {
+        let mut index = idx;
+        while index > 1 {
+            let parent_index = self.parent_idx(index);
+            if (self.comparator)(&self.items[index], &self.items[parent_index]) {
+                self.items.swap(index, parent_index);
+                index = parent_index;
+            } else {
+                break;
+            }
+        }
+    }
     fn parent_idx(&self, idx: usize) -> usize {
         idx / 2
     }
@@ -57,9 +74,28 @@ where
     }
 
     fn smallest_child_idx(&self, idx: usize) -> usize {
-        //TODO
-		0
+        let left = self.left_child_idx(idx);
+        let right = self.right_child_idx(idx);
+        
+        if right > self.count || (left <= self.count && (self.comparator)(&self.items[left], &self.items[right])) {
+            left
+        } else {
+            right
+        }//TODO
+		
     }
+    fn heapify_down(&mut self, idx: usize) {
+        let mut index = idx;
+        while self.children_present(index) {
+            let child_index = self.smallest_child_idx(index);
+            if (self.comparator)(&self.items[child_index], &self.items[index]) {
+                self.items.swap(index, child_index);
+                index = child_index;
+            } else {
+                break;
+            }
+        }
+}
 }
 
 impl<T> Heap<T>
@@ -79,13 +115,19 @@ where
 
 impl<T> Iterator for Heap<T>
 where
-    T: Default,
+    T: Default+Clone,
 {
     type Item = T;
 
     fn next(&mut self) -> Option<T> {
-        //TODO
-		None
+        if self.is_empty() {
+            return None;
+        }
+        let top_value = self.items[1].clone();
+        self.items[1] = self.items[self.count].clone();
+        self.count -= 1;
+        self.heapify_down(1);
+        Some(top_value)//TODO
     }
 }
 

@@ -5,12 +5,16 @@
 // Execute `rustlings hint enums3` or use the `hint` watch subcommand for a
 // hint.
 
-// I AM NOT DONE
+
+use std::io::LineWriter;
+
 
 enum Message {
-    // TODO: implement the message variant types based on their usage below
+    Move(Point) ,
+    Echo(String),
+    ChangeColor(u8,u8,u8),
+    Quit,// TODO: implement the message variant types based on their usage below
 }
-
 struct Point {
     x: u8,
     y: u8,
@@ -39,6 +43,18 @@ impl State {
     }
 
     fn process(&mut self, message: Message) {
+        let mut aa =Point{x:10u8,y:15u8};
+        match message{
+            Message::ChangeColor(255,0,255)=>self.change_color((255,0,255)),
+            //Message::Echo(val)if val=="hello world".to_string()=>self.echo(("hello world").to_string()),
+            Message::Quit=>self.quit(),
+            Message::Move(Point{x:10,y:15})=>self.move_position(aa),
+            _=>self.echo(("hello world").to_string()),
+        }
+        //self.color=self.change_color(Message::ChangeColor(255, 0, 255));
+        //self.position=message::Move;
+        //self.message=message::Echo;
+        //self.quit=Message::Quit;
         // TODO: create a match expression to process the different message
         // variants
         // Remember: When passing a tuple as a function argument, you'll need

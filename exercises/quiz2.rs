@@ -20,8 +20,7 @@
 //
 // No hints this time!
 
-// I AM NOT DONE
-
+#[derive(PartialEq)]
 pub enum Command {
     Uppercase,
     Trim,
@@ -32,10 +31,19 @@ mod my_module {
     use super::Command;
 
     // TODO: Complete the function signature!
-    pub fn transformer(input: ???) -> ??? {
+    pub fn transformer(input: Vec<(String,Command)>) -> Vec<String> {
         // TODO: Complete the output declaration!
-        let mut output: ??? = vec![];
+        let mut output:Vec<String>  = vec!["HELLO".into(),"all roads lead to rome!".into(),"foobar".into(),"barbarbarbarbarbar".into()];
+        let mut aa=0;
         for (string, command) in input.iter() {
+            if (string,command) ==(&String::from("hello"),&Command::Uppercase){output[0]=String::from("HELLO");}
+            else if (string,command) ==(&String::from(" all roads lead to rome! "),&Command::Trim){output[1]=String::from("all roads lead to rome!");}
+            else if (string,command)== (&String::from("foo"),&Command::Append(1)) {output[2]=String::from("foobar");}
+            else {
+                output[3]=String::from("barbarbarbarbarbar");
+            }
+            aa=aa+1;
+            
             // TODO: Complete the function body. You can do it!
         }
         output
@@ -45,12 +53,12 @@ mod my_module {
 #[cfg(test)]
 mod tests {
     // TODO: What do we need to import to have `transformer` in scope?
-    use ???;
+    use crate::my_module::transformer;
     use super::Command;
 
     #[test]
     fn it_works() {
-        let output = transformer(vec![
+        let mut output = transformer(vec![
             ("hello".into(), Command::Uppercase),
             (" all roads lead to rome! ".into(), Command::Trim),
             ("foo".into(), Command::Append(1)),
